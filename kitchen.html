@@ -38,14 +38,18 @@ select{
 
 <script>
 
+<script>
+
 const SHEET_API =
-"https://script.google.com/macros/s/YOUR_WEB_APP_URL/exec";
+"https://script.google.com/macros/s/AKfycby4sjmDaJfAZu0h7PwZsG9B6-0qtXG2dXMy0c7ZPl3VGBpHU9cTdVZGgEgFQO65OVho/exec";
 
 function loadOrders(){
 
-fetch(SHEET_API)
-.then(res=>res.json())
-.then(data=>{
+fetch(SHEET_API + "?t=" + new Date().getTime())
+.then(res=>res.text())
+.then(text=>{
+
+let data = JSON.parse(text);
 
 let container=document.getElementById("orders");
 container.innerHTML="";
@@ -96,11 +100,6 @@ status:status
 }
 
 loadOrders();
-
-/* AUTO REFRESH */
 setInterval(loadOrders,5000);
 
 </script>
-
-</body>
-</html>
