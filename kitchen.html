@@ -79,8 +79,6 @@ container.appendChild(div);
 
 });
 
-});
-
 }
 
 function updateStatus(id,status){
@@ -96,7 +94,45 @@ id:id,
 status:status
 })
 });
+function printOrder(btn){
 
+  let orderCard = btn.closest(".order");
+
+  let table = orderCard.querySelector("h2")?.innerText || "";
+  let items = orderCard.querySelector("p")?.innerText || "";
+  let total = orderCard.querySelector("h3")?.innerText || "";
+  let status = orderCard.querySelector(".status")?.innerText || "";
+
+  let printWindow = window.open("", "", "width=300,height=600");
+
+  printWindow.document.write(`
+    <html>
+    <head>
+      <title>Kitchen Ticket</title>
+      <style>
+        body{
+          font-family: monospace;
+          width:80mm;
+          font-size:14px;
+          margin:0;
+          padding:5px;
+        }
+        hr{border-top:1px dashed black;}
+      </style>
+    </head>
+    <body onload="window.print();window.close();">
+      <center><b>KITCHEN ORDER</b></center>
+      <hr>
+      <h2>${table}</h2>
+      <p>${items}</p>
+      <h3>${total}</h3>
+      <p>${status}</p>
+      <hr>
+    </body>
+    </html>
+  `);
+
+  printWindow.document.close();
 }
 
 loadOrders();
