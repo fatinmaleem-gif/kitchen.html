@@ -22,6 +22,7 @@ body{
 .pending{border-left:8px solid yellow;}
 .preparing{border-left:8px solid blue;}
 .done{border-left:8px solid green;}
+.cancel{border-left:8px solid red;}
 
 select{
   font-size:16px;
@@ -56,7 +57,7 @@ data.reverse().forEach(order=>{
 
 let div=document.createElement("div");
 
-let statusClass = order.status.toLowerCase();
+let statusClass = (order.status || "Pending").toLowerCase();
 
 div.className="order "+statusClass;
 
@@ -80,9 +81,9 @@ container.appendChild(div);
 });
 
 })
-.catch(err=>console.log(err));
+.catch(err=>console.log("LOAD ERROR:",err));
 
-} // ✅ CLOSE loadOrders
+}
 
 
 
@@ -100,7 +101,7 @@ status:status
 })
 });
 
-} // ✅ CLOSE updateStatus
+}
 
 
 
@@ -108,9 +109,9 @@ function printOrder(btn){
 
 let orderCard = btn.closest(".order");
 
-let table = orderCard.querySelector("h3")?.innerText || "";
-let items = orderCard.querySelector("p")?.innerText || "";
-let total = orderCard.querySelector("b")?.innerText || "";
+let table = orderCard.querySelector("h3").innerText;
+let items = orderCard.querySelector("p").innerText;
+let total = orderCard.querySelector("b").innerText;
 
 let printWindow = window.open("", "", "width=300,height=600");
 
@@ -120,7 +121,7 @@ printWindow.document.write(`
 <title>Kitchen Ticket</title>
 <style>
 body{
-font-family: monospace;
+font-family:monospace;
 width:80mm;
 font-size:14px;
 margin:0;
@@ -150,3 +151,6 @@ loadOrders();
 setInterval(loadOrders,5000);
 
 </script>
+
+</body>
+</html>
