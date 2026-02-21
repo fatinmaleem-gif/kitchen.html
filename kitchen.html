@@ -67,6 +67,8 @@ div.innerHTML=`
 <p>${order.items}</p>
 <b>RM ${order.total}</b><br><br>
 
+<button onclick="printOrder(this)">🖨️ Print</button><br><br>
+
 <select onchange="updateStatus('${order.id}',this.value)">
 <option ${order.status=="Pending"?"selected":""}>Pending</option>
 <option ${order.status=="Preparing"?"selected":""}>Preparing</option>
@@ -79,7 +81,12 @@ container.appendChild(div);
 
 });
 
-}
+})
+.catch(err=>console.log(err));
+
+} // ✅ CLOSE loadOrders
+
+
 
 function updateStatus(id,status){
 
@@ -94,46 +101,52 @@ id:id,
 status:status
 })
 });
+
+} // ✅ CLOSE updateStatus
+
+
+
 function printOrder(btn){
 
-  let orderCard = btn.closest(".order");
+let orderCard = btn.closest(".order");
 
-  let table = orderCard.querySelector("h2")?.innerText || "";
-  let items = orderCard.querySelector("p")?.innerText || "";
-  let total = orderCard.querySelector("h3")?.innerText || "";
-  let status = orderCard.querySelector(".status")?.innerText || "";
+let table = orderCard.querySelector("h3")?.innerText || "";
+let items = orderCard.querySelector("p")?.innerText || "";
+let total = orderCard.querySelector("b")?.innerText || "";
 
-  let printWindow = window.open("", "", "width=300,height=600");
+let printWindow = window.open("", "", "width=300,height=600");
 
-  printWindow.document.write(`
-    <html>
-    <head>
-      <title>Kitchen Ticket</title>
-      <style>
-        body{
-          font-family: monospace;
-          width:80mm;
-          font-size:14px;
-          margin:0;
-          padding:5px;
-        }
-        hr{border-top:1px dashed black;}
-      </style>
-    </head>
-    <body onload="window.print();window.close();">
-      <center><b>KITCHEN ORDER</b></center>
-      <hr>
-      <h2>${table}</h2>
-      <p>${items}</p>
-      <h3>${total}</h3>
-      <p>${status}</p>
-      <hr>
-    </body>
-    </html>
-  `);
-
-  printWindow.document.close();
+printWindow.document.write(`
+<html>
+<head>
+<title>Kitchen Ticket</title>
+<style>
+body{
+font-family: monospace;
+width:80mm;
+font-size:14px;
+margin:0;
+padding:5px;
 }
+hr{border-top:1px dashed black;}
+</style>
+</head>
+<body onload="window.print();window.close();">
+<center><b>KITCHEN ORDER</b></center>
+<hr>
+<h3>${table}</h3>
+<p>${items}</p>
+<b>${total}</b>
+<hr>
+</body>
+</html>
+`);
+
+printWindow.document.close();
+
+}
+
+
 
 loadOrders();
 setInterval(loadOrders,5000);
